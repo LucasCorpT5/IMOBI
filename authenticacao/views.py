@@ -19,17 +19,21 @@ def cadastro(request):
             return redirect('/auth/cadastro')
 
         user = User.objects.filter(username=username)
-        
+
         if user.exists():
             messages.add_message(request, constants.ERROR, 'Usuario já existe')
             return redirect('/auth/cadastro')
 
         try:
-            user = User(username=username, email=email, password=password)
+            user = User.objects.create_user(username=username, email=email, password=password)
 
-            user.save()
-            messages.add_message(request, constants.SUCCESS, 'Usuario criado com sucesso!')
-            return redirect('/auth/login')
+            if not "@" in email:
+                messages.add_message(request, constants.ERROR, 'Email invalido')
+                return redirect('/auth/cadastro')
+            else:
+                user.save()
+                messages.add_message(request, constants.SUCCESS, 'Usuario criado com sucesso!')
+                return redirect('/auth/login')
         except:
             messages.add_message(request, constants.ERROR, 'Erro interno do sistema')
             return redirect('/auth/cadastro')
@@ -42,13 +46,11 @@ def login(request):
         username = request.POST.get('username')
         password = request.POST.get('senha')
 
-        usuario = auth.authenticate(username=-username, password=password)
+        usuario = auth.authenticate(username=username, password=password)
 
         if not usuario:
-            messages.add_message(request, constants.ERROR, 'Usuario inexistente, crie uma conta')
-            return redirect('/auth/cadastro')
+            messages.add_message(request, constants.ERROR, 'Usuario ou senha invalidos')
+            return redirect('/auth/login')
         else:
-            auth.login()
-
-        return HttpResponse(f"{username}:{password}")
-
+            auth.login(request, usuario)
+            return redirect('/')
