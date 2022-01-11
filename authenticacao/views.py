@@ -47,7 +47,8 @@ def login(request):
         if not usuario:
             messages.add_message(request, constants.ERROR, 'Usuario inexistente, crie uma conta')
             return redirect('/auth/cadastro')
-
+        else:
+            auth.login()
 
         return HttpResponse(f"{username}:{password}")
 
