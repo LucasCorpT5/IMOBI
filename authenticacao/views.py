@@ -26,20 +26,19 @@ def cadastro(request):
 
         try:
             user = User.objects.create_user(username=username, email=email, password=password)
+            
+            user.save()
+            messages.add_message(request, constants.SUCCESS, 'Usuario criado com sucesso!')
+            return redirect('/auth/login')
 
-            if not "@" in email:
-                messages.add_message(request, constants.ERROR, 'Email invalido')
-                return redirect('/auth/cadastro')
-            else:
-                user.save()
-                messages.add_message(request, constants.SUCCESS, 'Usuario criado com sucesso!')
-                return redirect('/auth/login')
         except:
             messages.add_message(request, constants.ERROR, 'Erro interno do sistema')
             return redirect('/auth/cadastro')
 
 def login(request):
     if request.method == "GET":
+        if request.user.is_authenticated:
+            return redirect('/')
         return render(request, 'logar.html')
     elif request.method == "POST":
         username = request.POST.get('username')
