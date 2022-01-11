@@ -6,6 +6,7 @@ def cadastro(request):
     if request.method == "GET":
         return render(request, "cadastro.html")
     elif request.method == "POST":
+        print(request.POST)
         return HttpResponse("teste")
 
 
