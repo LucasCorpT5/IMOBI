@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.contrib import messages
+from django.contrib.messages import constants
 from django.contrib.auth.models import User
 
 # Create your views here.
@@ -12,21 +14,25 @@ def cadastro(request):
         password = request.POST.get("senha")
 
         if len(username.strip()) == 0 or len(email.strip()) == 0 or len(password.strip()) == 0:
+            messages.add_message(request, constants.ERROR, 'Preencha todos os campos')
             return redirect('/auth/cadastro')
 
         user = User.objects.filter(username=username)
         
         if user.exists():
+            messages.add_message(request, constants.ERROR, 'Usuario já existe')
             return redirect('/auth/cadastro')
 
         try:
             user = User(username=username, email=email, password=password)
 
             user.save()
+            messages.add_message(request, constants.SUCCESS, 'Usuario criado com sucesso!')
             return redirect('/auth/login')
         except:
+            messages.add_message(request, constants.ERROR, 'Erro interno do sistema')
             return redirect('/auth/cadastro')
 
 
 def login(request):
-    return HttpResponse("Logar")
+    return render(request, 'logar.html')
