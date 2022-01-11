@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.messages import constants
 from django.contrib.auth.models import User
+from django.contrib import auth
 
 # Create your views here.
 def cadastro(request):
@@ -40,4 +41,6 @@ def login(request):
     elif request.method == "POST":
         username = request.POST.get('username')
         password = request.POST.get('senha')
+
+        return HttpResponse(f"{username}:{password}")
 
