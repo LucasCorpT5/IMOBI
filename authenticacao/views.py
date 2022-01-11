@@ -8,6 +8,8 @@ from django.contrib import auth
 # Create your views here.
 def cadastro(request):
     if request.method == "GET":
+        if request.user.is_authenticated:
+            return redirect('/')
         return render(request, "cadastro.html")
     elif request.method == "POST":
         username = request.POST.get("username")
@@ -26,7 +28,7 @@ def cadastro(request):
 
         try:
             user = User.objects.create_user(username=username, email=email, password=password)
-            
+
             user.save()
             messages.add_message(request, constants.SUCCESS, 'Usuario criado com sucesso!')
             return redirect('/auth/login')
