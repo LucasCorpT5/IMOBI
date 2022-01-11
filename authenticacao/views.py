@@ -38,7 +38,6 @@ def cadastro(request):
             messages.add_message(request, constants.ERROR, 'Erro interno do sistema')
             return redirect('/auth/cadastro')
 
-
 def login(request):
     if request.method == "GET":
         return render(request, 'logar.html')
