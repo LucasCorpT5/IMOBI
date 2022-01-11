@@ -42,5 +42,12 @@ def login(request):
         username = request.POST.get('username')
         password = request.POST.get('senha')
 
+        usuario = auth.authenticate(username=-username, password=password)
+
+        if not usuario:
+            messages.add_message(request, constants.ERROR, 'Usuario inexistente, crie uma conta')
+            return redirect('/auth/cadastro')
+
+
         return HttpResponse(f"{username}:{password}")
 
