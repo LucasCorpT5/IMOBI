@@ -35,4 +35,9 @@ def cadastro(request):
 
 
 def login(request):
-    return render(request, 'logar.html')
+    if request.method == "GET":
+        return render(request, 'logar.html')
+    elif request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('senha')
+
