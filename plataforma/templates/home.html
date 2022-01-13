@@ -1,1 +1,5 @@
-<h1>Class</h1>
+{% for imovel in imoveis %}
+    <p>Rua: {{imovel.rua}}</p>
+    <p>Valor: {{imovel.valor}}</p>
+    <hr>
+{% endfor %}
