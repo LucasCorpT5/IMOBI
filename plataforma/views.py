@@ -17,6 +17,10 @@ def home(request):
             preco_minimo = 0
         if not preco_maximo:
             preco_maximo = 9999999999999999
+        if not tipo:
+            tipo = ['A', 'C']
+
+        imoveis = Imovei.objects.filter(valor__gte=preco_minimo).filter(valor__lte=preco_maximo).filter(tipo_imovel__in=tipo).filter(cidade=cidade)
 
     print(f'PM {preco_minimo} PMAX {preco_maximo} cidade {cidade} tipo {tipo}')
     imoveis = Imovei.objects.all()
