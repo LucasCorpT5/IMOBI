@@ -1,5 +1,5 @@
 from django.http import HttpResponse 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from  .models import Imovei, Cidade, Visitas
 from django.shortcuts import get_object_or_404
@@ -39,4 +39,17 @@ def agendar_visitas(request):
     horario = request.POST.get("horario")
     id_imovel = request.POST.get("id_imovel")
 
-    return HttpResponse('teste')
+    visitas = Visitas(
+        imovel_id=id_imovel,
+        usuario = usuario,
+        dia=dia,
+        horario=horario
+    )
+
+    visitas.save()
+
+    return redirect('/agendamentos')
+
+def agendamentos(request):
+    visitas = Visitas.objects.filter(usuario=request.user)
+    return render(request, "agendamentos.html", {'visitas': visitas})
