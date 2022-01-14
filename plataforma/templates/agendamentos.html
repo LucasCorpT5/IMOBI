@@ -45,7 +45,7 @@
                     <td>
 
                         {% if visita.status == "A" %}
-                            <a href="" class="btn btn-danger">CANCELAR</a>
+                            <a href="{% url 'cancelar_agendamento' visita.id %}" class="btn btn-danger">CANCELAR</a>
                         {% else %}
                             <a href="" class="btn btn-danger disabled">CANCELAR</a>
                         
