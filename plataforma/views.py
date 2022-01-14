@@ -1,7 +1,7 @@
 from django.http import HttpResponse 
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from  .models import Imovei, Cidade
+from  .models import Imovei, Cidade, Visitas
 from django.shortcuts import get_object_or_404
 
 # Create your views here.
@@ -32,3 +32,11 @@ def imovel(request, id):
     imovel = get_object_or_404(Imovei, id=id)
     sugestoes = Imovei.objects.filter(cidade=imovel.cidade).exclude(id=id)[:2]
     return render(request, "imovel.html", {'imovel': imovel, 'sugestoes': sugestoes})
+
+def agendar_visitas(request):
+    usuario = request.user
+    dia = request.POST.get("dia")
+    horario = request.POST.get("horario")
+    id_imovel = request.POST.get("id_imovel")
+
+    return HttpResponse('teste')
