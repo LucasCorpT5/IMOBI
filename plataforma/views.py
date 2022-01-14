@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from  .models import Imovei, Cidade
+from django.shortcuts import get_object_or_404
 
 # Create your views here.
 @login_required(login_url="/auth/login")
@@ -28,4 +29,6 @@ def home(request):
     return render(request, 'home.html', {'imoveis': imoveis, 'cidades': cidades})
 
 def imovel(request, id):
-    return HttpResponse(id)
+    imovel = get_object_or_404(Imovei, id=id)
+    sugestoes = Imovei.objects.filter(cidade=imovel.cidade).exclude(id=id)[:2]
+    return render(request, "imovel.html", {'imovel': imovel, 'sugestoes': sugestoes})
